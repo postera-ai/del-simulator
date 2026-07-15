@@ -1,0 +1,12 @@
+{
+    "Linker": [
+        "CCCCCN"
+    ],
+    "Acids 1": [
+        "O=C(O)Cc1cc(Br)ccc1[N+](=O)[O-]",
+        "Null"
+    ],
+    "Acids 2": [
+        "CCCC(=O)O"
+    ]
+}

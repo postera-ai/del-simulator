@@ -1,0 +1,6 @@
+nsynthon_id,smiles,relative_fraction
+0_0_X,CCCCCN,0.3
+0_0_X,CCCCCNC(=O)Cc1cc(Br)ccc1[N+](=O)[O-],0.7
+0_1_X,CCCCCN,1.0
+0_X_0,CCCCCN,0.2
+0_X_0,CCCCCNC(=O)CCC,0.8

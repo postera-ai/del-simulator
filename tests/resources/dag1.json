@@ -1,0 +1,38 @@
+{
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+        {
+            "id": "B0"
+        },
+        {
+            "id": "B1"
+        },
+        {
+            "id": "B2"
+        }
+    ],
+    "links": [
+        {
+            "reaction_template": "[NX3;!$(N~[!#6;!#1;!#7;!#8]);!$([NH1](C)([NH2]));!$(N[#6]=[#6]);!$(NC=N);!$(NC=O);!$(NC=S):0][#1].[#6,#1:1][CX3:2](=[OX1:3])[OX2][#1]>>[*:1][*:2](=[*:3])[*:0]",
+            "reaction_name": "Amidation",
+            "yield_generator_class": "YieldGeneratorUniform",
+            "yield_generator_params": {
+                "success_fraction": 0.9
+            },
+            "source": "B0",
+            "target": "B1"
+        },
+        {
+            "reaction_template": "[c,C,O,N,n:1][#7:2]C(=O)!@O[CH2][CH]1c2ccccc2-c3ccccc13>>[*:1][*:2][#1]",
+            "reaction_name": "N-Fmoc deprotection",
+            "yield_generator_class": "YieldGeneratorUniform",
+            "yield_generator_params": {
+                "success_fraction": 1.0
+            },
+            "source": "B1",
+            "target": "B2"
+        }
+    ]
+}

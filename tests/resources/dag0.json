@@ -1,0 +1,38 @@
+{
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+        {
+            "id": "B0"
+        },
+        {
+            "id": "B1"
+        },
+        {
+            "id": "B2"
+        }
+    ],
+    "links": [
+        {
+            "reaction_template": "[NX3;!$(N~[!#6;!#1;!#7;!#8]);!$([NH1](C)([NH2]));!$(N[#6]=[#6]);!$(NC=N);!$(NC=O);!$(NC=S):0][#1].[#6,#1:1][CX3:2](=[OX1:3])[OX2][#1]>>[*:1][*:2](=[*:3])[*:0]",
+            "reaction_name": "Amidation",
+            "yield_generator_class": "YieldGeneratorUniform",
+            "yield_generator_params": {
+                "success_fraction": 0.7
+            },
+            "source": "B0",
+            "target": "B1"
+        },
+        {
+            "reaction_template": "[c,$([CX3]=[CX3]);!$([CX3](=[CX3])[OX2,SX2,NX3][#1]);!$([CX3]=[CX3][OX2,SX2,NX3][#1]):1][Cl,Br,I,$([O][S](=[O])(=[O])[C]([F])([F])[F])].[c,$([CX3]=[CX3]);!$([CX3](=[CX3])[OX2,SX2,NX3][#1]);!$([CX3]=[CX3][OX2,SX2,NX3][#1]):2]-;!@[$(B1OC(C)(C)C(C)(C)O1),$(B(O)O)]>>[*:1][*:2]",
+            "reaction_name": "Sp2-sp2 Suzuki coupling",
+            "yield_generator_class": "YieldGeneratorUniform",
+            "yield_generator_params": {
+                "success_fraction": 0.8
+            },
+            "source": "B1",
+            "target": "B2"
+        }
+    ]
+}

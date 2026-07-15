@@ -1,0 +1,138 @@
+# Description: Configuration file for the del-a package
+# This is a normal YAML with OmegaConf resolvers
+# anchors etc work here
+loglevel: "INFO"
+# as this is basic YAML, these paths can be used further along to keep the config tidy
+data_path: ${oc.env:DEL_SIMULATOR_EXPERIMENT_PATH}
+experiment_id: example
+# 
+random_seed: &random_seed 42 #anchors work!
+library_generation:
+  building_block_path: '${data_path}/library/bbs.json'
+  reaction_scheme_path: '${data_path}/library/reaction_scheme.json'
+  output_path: ${data_path}
+  num_cpu: 8
+  chunksize: 250
+  return_all_products: False
+affinity_generation:
+  input_library_path: "${data_path}/library.csv"
+  output_path: ${data_path}
+  runs:
+    affinity_seh_512:
+      method: "similarity"
+      method_parameters:
+        chunksize: 3192
+        parallelism: 24
+        sampler: "truncated_normal"
+        sampler_params:
+          loc: 3.5
+          scale: 0.5
+          seed: *random_seed
+        kernel_params:
+          a: 0.35
+          c: 30.0
+        tversky_params: # 1.0, 1.0  is the Tanimoto similarity
+          a: 1.0
+          b: 0.0
+        fp_generator_method: morgan
+        fp_generator_method_parameters:
+          nBits: 512
+          radius: 3
+        progress_bar: True
+        reference_affinity_path: '${oc.env:DEL_SIMULATOR_EXPERIMENT_PATH}/reference_affinities/seh_binding_db.csv'
+        reference_smiles_field_name: 'smiles'
+        reference_affinity_field_name: 'p_activity'
+    affinity_ntc: ${load_yaml:ntc_affinity_params.yaml} # this can load external yamls configs even more tidy!
+selection:
+  input_library_path: "${data_path}/library.csv"
+  input_affinity_paths:
+    "ntc": "${data_path}/affinity_ntc.csv"
+    "seh": "${data_path}/affinity_seh_512.csv"
+  initial_library_amount_mol: 2.0e-11 # 0.02 nmol = 20 pmol 
+  experiment_volume_L: 200.0e-6 #200 uL
+  selection_experiments:
+    seh_3_experiment:
+      binding_sites:
+        - "ntc"
+        - "seh"
+      recovery_fractions:
+        - 0.8
+        - 0.8
+      binding_site_concentrations_M:
+        - 1.e-6
+        - 1.e-6
+      num_selection_rounds: 3
+    ntc_3_experiment:
+      binding_sites:
+        - "ntc"
+      recovery_fractions:
+        - 0.8
+      binding_site_concentrations_M:
+        - 1.e-6
+      num_selection_rounds: 3
+amplification_readout:
+  readout_seed: 0
+  output_path_prefix: "${data_path}/replica_${amplification_readout.readout_seed}"
+  readout_runs:
+    reads_100k:
+      num_reads: 100000
+      output_path: "readout/reads_100k/"
+data_prep:
+  runs:
+    replica_0_100k:
+      intended_product_path: '${data_path}/intended_product/library.csv'
+      # note that these are constructed from the previous parts of the config, or can be absolute paths
+      target_data_path: "${amplification_readout.output_path_prefix}/${amplification_readout.readout_runs.reads_100k.output_path}/seh_3_experiment.csv"
+      ntc_data_path: "${amplification_readout.output_path_prefix}/${amplification_readout.readout_runs.reads_100k.output_path}/ntc_3_experiment.csv"
+      output_path: "${amplification_readout.output_path_prefix}/${amplification_readout.readout_runs.reads_100k.output_path}"
+      fp_generator_method: morgan
+      fp_generator_method_parameters:
+        nBits: 1024
+        radius: 2
+      bbs_per_nsynthon: 3
+      num_bbs_to_aggregate: 2
+training_and_inference:
+  runs:
+    replica_0_100k_chemprop:
+      input_data_path: "${data_prep.runs.replica_0_100k.output_path}/processed_data_df.pkl"
+      model_output_path: "${data_prep.runs.replica_0_100k.output_path}/model/chemprop.pkl"
+      metrics_output_path: "${data_prep.runs.replica_0_100k.output_path}/model/metrics.json"
+      enrichment_method: "count_ratio"
+      enrichment_threshold: 5
+      ml_config:
+        method: "chemprop" # options are "random_forest" or "chemprop"
+        random_seed: *random_seed
+        method_parameters:
+          batch_size: 128
+          num_workers: 8
+          max_epochs: 2
+      inference:
+        featurized_data_path:
+        smiles_path: "${data_path}/inference/2024.01_Enamine_REAL_10k_smiles.csv"
+        # the smiles file is newline-delimited with no real column separator, and at least one
+        # SMILES contains an unquoted comma in a CXSMILES stereo annotation (e.g. "|&1:4,8|"),
+        # which breaks the default comma-separated read -- tab is safe since the file has none
+        separator: "\t"
+        affinity_path: "${data_path}/inference/affinity_seh_512_10k.csv"
+        affinity_threshold: 6.75
+        affinity_column: pKd
+        output_predictions_path: "${data_prep.runs.replica_0_100k.output_path}/inference/enamine_10k_predictions_chemprop.csv"
+    replica_0_100k_rf:
+      input_data_path: "${data_prep.runs.replica_0_100k.output_path}/processed_data_df.pkl"
+      model_output_path: "${data_prep.runs.replica_0_100k.output_path}/model/random_forest_model.pkl"
+      metrics_output_path: "${data_prep.runs.replica_0_100k.output_path}/model/metrics.json"
+      enrichment_method: "count_ratio"
+      enrichment_threshold: 5
+      ml_config:
+        method: "random_forest" # options are "random_forest" or "chemprop"
+        random_seed: *random_seed
+        method_parameters:
+          n_estimators: 100
+          max_depth: 20
+      inference:
+        featurized_data_path: "${data_path}/inference/enamine_10k_fingerprints.npy"
+        smiles_path:
+        affinity_path: "${data_path}/inference/affinity_seh_512_10k.csv"
+        affinity_threshold: 6.75
+        affinity_column: pKd
+        output_predictions_path: "${data_prep.runs.replica_0_100k.output_path}/inference/enamine_10k_predictions_rf.csv"

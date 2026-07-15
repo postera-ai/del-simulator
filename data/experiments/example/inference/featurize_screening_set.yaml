@@ -1,0 +1,18 @@
+# Description: Configuration file for the del simulator
+loglevel: "INFO"
+data_path: ${oc.env:DEL_SIMULATOR_EXPERIMENT_PATH}
+experiment_id:
+random_seed: 42
+featurizer_runs:
+  featurizer_runs:
+    - input_path: "${data_path}/inference/2024.01_Enamine_REAL_10k_smiles.csv"
+      output_path: "${data_path}/inference/enamine_10k_fingerprints.npy"
+      featurizer_method: 'fingerprint'
+      featurizer_parameters:
+        parallelism: 40
+        chunksize: 16384
+        smiles_column_name: 'smiles'
+        fp_generator_method: morgan
+        fp_generator_method_parameters:
+          nBits: 1024
+          radius: 2

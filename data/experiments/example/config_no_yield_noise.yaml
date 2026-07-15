@@ -1,0 +1,15 @@
+# Description: Configuration file for the del-a package
+# This is a normal YAML with OmegaConf resolvers
+# anchors etc work here
+loglevel: "INFO"
+# as this is basoic YAML, these paths can be used further along to keep the config tidy
+data_path: ${oc.env:DEL_SIMULATOR_EXPERIMENT_PATH}
+experiment_id: example
+random_seed: &random_seed 42 #anchors work!
+library_generation:
+  building_block_path: '${data_path}/library/bbs.json'
+  reaction_scheme_path: '${data_path}/library/reaction_scheme_no_yield_noise.json'
+  output_path: '${data_path}/intended_product/'
+  num_cpu: 8
+  chunksize: 250
+  return_all_products: False

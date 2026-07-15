@@ -1,0 +1,10 @@
+nsynthon_id,smiles,relative_fraction
+0_0_0,CCCCCN,0.1
+0_0_0,CCCCCNC(=O)C[C@@H](CC(C)C)NC(=O)OCC1c2ccccc2-c2ccccc21,0.0
+0_0_0,CCCCCNC(=O)C[C@H](N)CC(C)C,0.9
+0_1_0,CCCCCN,0.1
+0_1_0,CCCCCNC(=O)[C@@H]1CCCN1C(=O)OCC1c2ccccc2-c2ccccc21,0.0
+0_1_0,CCCCCNC(=O)[C@@H]1CCCN1,0.9
+0_2_0,CCCCCN,0.1
+0_2_0,CCCCCNC(=O)CN(Cc1ccccc1)C(=O)OCC1c2ccccc2-c2ccccc21,0.0
+0_2_0,CCCCCNC(=O)CNCc1ccccc1,0.9

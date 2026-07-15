@@ -1,0 +1,13 @@
+{
+    "B0": [
+        "CCCCCN"
+    ],
+    "B1": [
+        "CC(C)C[C@H](CC(=O)O)NC(=O)OCC1c2ccccc2-c2ccccc21",
+        "O=C(O)[C@@H]1CCCN1C(=O)OCC1c2ccccc2-c2ccccc21",
+        "O=C(O)CN(Cc1ccccc1)C(=O)OCC1c2ccccc2-c2ccccc21"
+    ],
+    "B2": [
+        "Null"
+    ]
+}
