@@ -79,7 +79,8 @@ walkthrough below in a container):
 poetry run pytest tests/
 ```
 
-## Usage
+<details>
+<summary><h2 style="display: inline;">Usage</h2></summary>
 
 Set the following environment variable:
 
@@ -188,6 +189,8 @@ values from the command line (an OmegaConf dotlist merge) without editing the YA
 ```
 poetry run python scripts/generate_library.py data/experiments/example/config.yaml --config_attrs library_generation.num_cpu=4
 ```
+
+</details>
 
 See `notebooks/` for example downstream analyses: `paper_figures.ipynb` reproduces the figures
 from the paper above.
