@@ -1,4 +1,4 @@
-# Understanding Machine Learning Models Trained on DNA-Encoded Libraries for Virtual Screening
+# A Computational Simulator for DNA-Encoded Libraries (DEL)
 
 ## Background
 
