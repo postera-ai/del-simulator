@@ -1,4 +1,4 @@
-# DEL Simulator
+# Understanding Machine Learning Models Trained on DNA-Encoded Libraries for Virtual Screening
 
 ## Background
 
