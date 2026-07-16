@@ -192,5 +192,7 @@ poetry run python scripts/generate_library.py data/experiments/example/config.ya
 
 </details>
 
+### Data Analysis
+
 See `notebooks/` for example downstream analyses: `paper_figures.ipynb` reproduces the figures
 from the paper above.
