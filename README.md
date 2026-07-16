@@ -80,7 +80,7 @@ walkthrough below in a container):
   `sudo rm -rf` them later.
 
 <details>
-<summary><h2 style="display: inline;">Usage (Quickstart)</h2></summary>
+<summary><h2 style="display: inline;">Usage (Full End-to-end example)</h2></summary>
 
 Set the following environment variable:
 
@@ -192,7 +192,7 @@ poetry run python scripts/generate_library.py data/experiments/example/config.ya
 
 </details>
 
-### Data Analysis
+## Data Analysis
 
 See `notebooks/` for example downstream analyses: `paper_figures.ipynb` reproduces the figures
 from the paper above.
