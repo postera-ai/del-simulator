@@ -45,6 +45,12 @@ Run everything below with `poetry run <command>` (e.g. `poetry run python script
 didn't work out of the box in our testing either (missing bash activator). `poetry run` avoids
 all of this and works the same way across Poetry versions.
 
+### Running the tests
+
+```
+poetry run pytest tests/
+```
+
 ### Using Docker (optional)
 
 The package ships its own `Dockerfile`:
@@ -73,14 +79,8 @@ walkthrough below in a container):
   `--user "$(id -u):$(id -g)"` to `docker run` if you'd rather they be owned by you, or just
   `sudo rm -rf` them later.
 
-## Running the tests
-
-```
-poetry run pytest tests/
-```
-
 <details>
-<summary><h2 style="display: inline;">Usage</h2></summary>
+<summary><h2 style="display: inline;">Usage (Quickstart)</h2></summary>
 
 Set the following environment variable:
 
