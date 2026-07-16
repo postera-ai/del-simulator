@@ -1,4 +1,4 @@
-# DEL Simulator
+# A Computational Simulator for DNA-Encoded Libraries (DEL)
 
 ## Background
 
@@ -11,8 +11,18 @@ implementation behind the paper below; see `notebooks/paper_figures.ipynb` for t
 generates its figures.
 
 ## References
+Please cite our paper: [Understanding Machine Learning Models Trained on
+DNA-Encoded Libraries for Virtual Screening](https://chemrxiv.org/doi/pdf/10.26434/chemrxiv-2025-8rw8j) if you find this project
+helpful:
 
-https://chemrxiv.org/doi/pdf/10.26434/chemrxiv-2025-8rw8j
+```
+@article{menzeleev2025simulator,
+  title={DEL Simulator: A Digital Twin for Understanding Machine Learning on DNA-Encoded Libraries},
+  author={Menzeleev, Artur and Chitturi, Sathya and Davies, Geraint and Schroeder, Tony and Lee, Alpha},
+  year={2025},
+  publisher={ChemRxiv}
+}
+```
 
 ## Installation
 
