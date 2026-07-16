@@ -35,13 +35,7 @@ from typing import (
 
 rxn_var_separator = "___var"
 
-"""
-WARNING WARNING WARNING
-FIXME #842
-This code is derived from https://github.com/postera-ai/postera_rxn_templates
-and should be carefully examined for IP before it is made avaiable
 
-"""
 
 
 def run_reactants(
@@ -87,10 +81,6 @@ def run_reactants(
     return rxn_products
 
 
-"""
-WARNING WARNING WARNING
-
-"""
 
 
 class ReactionGraph:
@@ -167,7 +157,6 @@ class ReactionGraph:
         #      logging.debug("Reaction successful:  %s unique products", len(products))
 
         if not return_all_products:
-            # print(len(products))
             if len(products) > 1:
                 return [current_mol, products[0]]
 
