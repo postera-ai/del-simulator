@@ -1,0 +1,2 @@
+{"bedroc": NaN, "enrichment_0.1pct": NaN, "enrichment_1": NaN, "enrichment_5": NaN, "enrichment_10": NaN, "auc": NaN, "f1": 0.0, "model_type": "random_forest", "fold": "0", "prediction_type": "validation"}
+{"bedroc": 0.09729982343790754, "enrichment_0.1pct": 28.30188679245283, "enrichment_1": 6.289308176100629, "enrichment_5": 2.0754716981132075, "enrichment_10": 1.6037735849056607, "auc": 0.5285532104240594, "f1": 0.0, "model_type": "random_forest", "prediction_type": "screening"}

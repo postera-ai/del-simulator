@@ -1,0 +1,9 @@
+reads_1000k:
+  num_reads: 1000000
+  output_path: "readout/reads_1000k/"
+reads_2000k:
+  num_reads: 2000000
+  output_path: "readout/reads_2000k/"
+reads_4000k:
+  num_reads: 4000000
+  output_path: "readout/reads_4000k/"

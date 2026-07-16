@@ -1,0 +1,10 @@
+method: "random"
+method_parameters:
+  parallelism: 24
+  chunksize : 3192
+  sampler: 'lognormal'
+  sampler_params:
+    s: 0.15  #
+    loc: 0
+    scale: 4.0  # exp(mu)
+    seed: 42

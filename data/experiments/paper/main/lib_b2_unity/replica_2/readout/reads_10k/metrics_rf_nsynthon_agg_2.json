@@ -1,0 +1,2 @@
+{"bedroc": 0.15997318127125695, "enrichment_0.1pct": 8.775590551181102, "enrichment_1": 1.595561918396564, "enrichment_5": 1.8917440709132913, "enrichment_10": 3.0740841152340987, "auc": 0.7117714134818512, "f1": 0.048, "model_type": "random_forest", "fold": "0", "prediction_type": "validation"}
+{"bedroc": 0.38945369297578164, "enrichment_0.1pct": 97.73013871374528, "enrichment_1": 24.71626733921816, "enrichment_5": 8.940731399747794, "enrichment_10": 5.416141235813368, "auc": 0.7782266950288579, "f1": 0.0, "model_type": "random_forest", "prediction_type": "screening"}

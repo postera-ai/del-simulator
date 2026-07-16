@@ -1,0 +1,23 @@
+method: "similarity"
+method_parameters:
+  chunksize :  3192
+  parallelism: 24
+  sampler: "truncated_normal"
+  sampler_params:
+    loc: 3.5
+    scale: 0.5
+    seed:  42
+  kernel_params:
+    a: 0.35
+    c: 30.0
+  tversky_params:  # 1.0, 1.0  is the Tanimoto similarity
+    a: 1.0
+    b: 0.0
+  fp_generator_method: morgan
+  fp_generator_method_parameters:
+    nBits: 512
+    radius: 3
+  progress_bar : True
+  reference_affinity_path: '${oc.env:DEL_SIMULATOR_EXPERIMENT_PATH}/reference_affinities/seh_binding_db.csv'
+  reference_smiles_field_name: 'smiles'
+  reference_affinity_field_name:  'p_activity'
