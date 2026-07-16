@@ -39,11 +39,13 @@ If your default Python isn't 3.11, point Poetry at one explicitly first with
 compatible interpreter on their own).
 
 Run everything below with `poetry run <command>` (e.g. `poetry run python scripts/...`,
-`poetry run pytest tests/`) -- verified with a fresh `poetry install` (Poetry 2.4.1). Note that
-`poetry shell` is **not** a good alternative here: as of Poetry 2.0 it's no longer built in (needs
-`poetry self add poetry-plugin-shell` first), and `poetry env activate`, its newer replacement,
-didn't work out of the box in our testing either (missing bash activator). `poetry run` avoids
-all of this and works the same way across Poetry versions.
+`poetry run pytest tests/`).
+
+### Running the tests
+
+```
+poetry run pytest tests/
+```
 
 ### Using Docker (optional)
 
@@ -54,32 +56,19 @@ docker build -t del-sim:latest .
 docker run -it --rm -v "$(pwd)":/app/del-simulator del-sim:latest bash
 ```
 
-The image is built on `nvidia/cuda`, but a GPU is only used opportunistically for ChemProp
+The image is built on `nvidia/cuda`, but a GPU is only used for ChemProp
 training -- CPU is fine for the walkthrough below.
 
-A few things worth knowing about running this way (verified by actually running the full
-walkthrough below in a container):
+Note: 
 
 - Dependencies live in a Poetry-managed virtualenv, separate from the container's system Python.
-  Once you're in the container's shell, run `poetry shell` (or prefix every command with
-  `poetry run`) -- plain `python scripts/...` won't see rdkit/chemprop/etc.
-- ChemProp training spins up multiple PyTorch DataLoader workers
-  (`ml_config.method_parameters.num_workers`, 8 by default in the example config), which need
+  Once you're in the container's shell, run `poetry shell`.
+- ChemProp training spins up multiple PyTorch DataLoader workers, which need
   more `/dev/shm` than Docker's small default (64MB). If you see
-  `RuntimeError: unable to allocate shared memory`, add `--shm-size=2g` to `docker run` (training
-  still completes without it, just noisily, since failed workers are retried).
-- The container runs as root, so files written back through the bind mount (including the
-  example experiment's output) end up owned by root on the host. Add
-  `--user "$(id -u):$(id -g)"` to `docker run` if you'd rather they be owned by you, or just
-  `sudo rm -rf` them later.
+  `RuntimeError: unable to allocate shared memory`, add `--shm-size=2g` to `docker run`.
 
-## Running the tests
-
-```
-poetry run pytest tests/
-```
-
-## Usage
+<details>
+<summary><h2 style="display: inline;">Usage (Full End-to-end example)</h2></summary>
 
 Set the following environment variable:
 
@@ -188,6 +177,10 @@ values from the command line (an OmegaConf dotlist merge) without editing the YA
 ```
 poetry run python scripts/generate_library.py data/experiments/example/config.yaml --config_attrs library_generation.num_cpu=4
 ```
+
+</details>
+
+## Data Analysis
 
 See `notebooks/` for example downstream analyses: `paper_figures.ipynb` reproduces the figures
 from the paper above.
