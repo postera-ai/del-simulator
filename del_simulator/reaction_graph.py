@@ -35,13 +35,7 @@ from typing import (
 
 rxn_var_separator = "___var"
 
-"""
-WARNING WARNING WARNING
-FIXME #842
-This code is derived from https://github.com/postera-ai/postera_rxn_templates
-and should be carefully examined for IP before it is made avaiable
 
-"""
 
 
 def run_reactants(
