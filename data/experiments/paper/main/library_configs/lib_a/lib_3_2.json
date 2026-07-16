@@ -1,0 +1,40 @@
+{
+    "directed": true,
+    "multigraph": false,
+    "graph": {},
+    "nodes": [
+        {
+            "id": "Cycle1 Amine"
+        },
+        {
+            "id": "Cycle2 Acid-Amine"
+        },
+        {
+            "id": "Cycle3 Acid"
+        }
+    ],
+    "links": [
+        {
+            "reaction_template": "[NX3;!$(N~[!#6;!#1;!#7;!#8]);!$([NH1](C)([NH2]));!$(N[#6]=[#6]);!$(NC=N);!$(NC=O);!$(NC=S):0][#1].[#6,#1:1][CX3:2](=[OX1:3])[OX2][#1]>>[*:1][*:2](=[*:3])[*:0]",
+            "reaction_name": "Amidation",
+            "yield_generator_class": "YieldGeneratorBeta",
+            "yield_generator_params": {
+                "alpha": 3,
+                "beta": 2
+            },
+            "source": "Cycle1 Amine",
+            "target": "Cycle2 Acid-Amine"
+        },
+        {
+            "reaction_template": "[NX3;!$(N~[!#6;!#1;!#7;!#8]);!$([NH1](C)([NH2]));!$(N[#6]=[#6]);!$(NC=N);!$(NC=O);!$(NC=S):0][#1].[#6,#1:1][CX3:2](=[OX1:3])[OX2][#1]>>[*:1][*:2](=[*:3])[*:0]",
+            "reaction_name": "Amidation",
+            "yield_generator_class": "YieldGeneratorBeta",
+            "yield_generator_params": {
+                "alpha": 3,
+                "beta": 2
+            },
+            "source": "Cycle2 Acid-Amine",
+            "target": "Cycle3 Acid"
+        }
+    ]
+}

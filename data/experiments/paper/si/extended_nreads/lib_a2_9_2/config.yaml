@@ -1,0 +1,77 @@
+# Description: Configuration file for lib_a2_unity experiment
+loglevel: "INFO"
+data_path: ${oc.env:DEL_SIMULATOR_EXPERIMENT_PATH} 
+experiment_id: lib_a2_9_2
+random_seed: &random_seed 42 #anchors work!
+library_generation:
+  building_block_path: '${data_path}/library_configs/lib_a/bbs_a2.json'
+  reaction_scheme_path: '${data_path}/library_configs/lib_a/lib_9_2.json'
+  output_path: ${data_path}/${experiment_id}
+  num_cpu: 36
+  chunksize: 250
+  return_all_products: False 
+affinity_generation: 
+  input_library_path: "${data_path}/${experiment_id}/library.csv"
+  output_path: ${data_path}/${experiment_id}/
+  runs: 
+    affinity_mk14_512:  ${load_yaml:../mk14_affinity_params.yaml}
+    affinity_ntc:   ${load_yaml:../ntc_affinity_params.yaml} 
+selection:
+  input_library_path: "${data_path}/${experiment_id}/library.csv"
+  input_affinity_paths:  
+    "ntc": "${data_path}/${experiment_id}/affinity_ntc.csv"
+    "mk14": "${data_path}/${experiment_id}/affinity_mk14_512.csv"
+  initial_library_amount_mol: 2.0e-11 # 0.02 nmol = 20 pmol 
+  experiment_volume_L: 200.0e-6 #200 uL
+  selection_experiments: 
+    mk14_3_experiment:
+      binding_sites: ["ntc","mk14"]
+      recovery_fractions: [0.8, 0.8]
+      binding_site_concentrations_M: [1.e-6, 1.e-6]
+      num_selection_rounds: 3
+    ntc_3_experiment:
+      binding_sites: ["ntc"]
+      recovery_fractions: [0.8]
+      binding_site_concentrations_M: [1.e-6]
+      num_selection_rounds: 3
+amplification_readout:
+  readout_seed: {{REPLICA}}
+  output_path_prefix: "${data_path}/${experiment_id}/replica_${amplification_readout.readout_seed}"
+  readout_runs:  ${load_yaml:../readout_runs.yaml}
+data_prep:
+    runs:
+      data_prep_reads_{{NUM_READS}}k:
+        intended_product_path: "${data_path}/lib_a2_unity/library.csv"
+        target_data_path:  "${data_path}/${experiment_id}/replica_${amplification_readout.readout_seed}/readout/reads_{{NUM_READS}}k/mk14_3_experiment.csv"
+        ntc_data_path:  "${data_path}/${experiment_id}/replica_${amplification_readout.readout_seed}/readout/reads_{{NUM_READS}}k/ntc_3_experiment.csv"
+        output_path:  "${data_path}/${experiment_id}/replica_${amplification_readout.readout_seed}/readout/reads_{{NUM_READS}}k/"
+        fp_generator_method: morgan
+        fp_generator_method_parameters:
+          nBits: 1024
+          radius: 2
+        bbs_per_nsynthon: 3
+        num_bbs_to_aggregate: 2
+training_and_inference:
+  runs:
+    replica_{{REPLICA}}_{{NUM_READS}}k_chemprop:
+      input_data_path: "${data_path}/${experiment_id}/replica_${amplification_readout.readout_seed}/readout/reads_{{NUM_READS}}k/processed_data_df.pkl"
+      model_output_path: "${data_path}/${experiment_id}/replica_${amplification_readout.readout_seed}/readout/reads_{{NUM_READS}}k/"
+      metrics_output_path: "${data_path}/${experiment_id}/replica_${amplification_readout.readout_seed}/readout/reads_{{NUM_READS}}k/metrics.json"
+      enrichment_method: "count_ratio" 
+      enrichment_threshold: 5
+      ml_config:
+        method: "chemprop" 
+        random_seed: 42
+        method_parameters:
+          batch_size: 512
+          num_workers: 32
+          max_epochs: 30
+      inference:
+        featurized_data_path: "${data_path}/inference/2024.01_Enamine_REAL_6.8M_filtered_features_mk14.pkl" 
+        smiles_path:  "${data_path}/inference/2024.01_Enamine_REAL_6.8M_filtered_smiles.csv" 
+        affinity_path: "${data_path}/inference/affinity_mk14_512_filtered.csv"
+        affinity_threshold: 6.75
+        affinity_column : pKd_mk14
+        sample_size: 1000000
+        output_predictions_path: 
+

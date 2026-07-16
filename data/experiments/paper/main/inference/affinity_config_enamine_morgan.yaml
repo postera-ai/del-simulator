@@ -1,0 +1,58 @@
+# Description: Configuration file for the del-a package
+loglevel: "INFO"
+data_path: 
+experiment_id: 
+random_seed: 42
+affinity_generation:
+  input_library_path: "/home/ubuntu/del_prs/packages/research/del-simulator/data/experiments/2025Sprint8/inference/2024.01_Enamine_REAL_6.8M_filtered_smiles.csv"
+  output_path: '/home/ubuntu/del_prs/packages/research/del-simulator/data/experiments/2025Sprint8/inference/'
+  num_query_molecules:
+  runs: 
+    affinity_mk14_512_filtered: 
+      method: "similarity"
+      method_parameters:
+        chunksize : 3192
+        parallelism: 64
+        sampler: 'truncated_normal'
+        sampler_params:
+          loc: 3.5
+          scale: 0.5
+          seed: 42
+        kernel_params:
+          a: XXX
+          c: XXX
+        tversky_params:  # 1.0, 1.0  is the Tanimoto similarity
+          a: 1.0
+          b: 0.0
+        fp_generator_method: morgan
+        fp_generator_method_parameters:
+          nBits: 512
+          radius: 3
+        progress_bar : True
+        reference_affinity_path: '/home/ubuntu/del_prs/packages/research/del-simulator/data/experiments/2025Sprint8/reference_affinities/mk14_dude_shifted_affinities.csv'
+        reference_smiles_field_name: 'smiles'
+        reference_affinity_field_name:  'shifted_aff'
+    affinity_seh_512_filtered: 
+        method: "similarity"
+        method_parameters:
+          chunksize :  3192
+          parallelism: 64
+          sampler: "truncated_normal"
+          sampler_params:
+            loc: 3.5
+            scale: 0.5
+            seed:  42
+          kernel_params:
+            a: 0.35
+            c: 30.0
+          tversky_params:  # 1.0, 1.0  is the Tanimoto similarity
+            a: 1.0
+            b: 0.0
+          fp_generator_method: morgan
+          fp_generator_method_parameters:
+            nBits: 512
+            radius: 3
+          progress_bar : True
+          reference_affinity_path: '/home/ubuntu/del_prs/packages/research/del-simulator/data/experiments/2025Sprint8/reference_affinities/seh_binding_db.csv'
+          reference_smiles_field_name: 'smiles'
+          reference_affinity_field_name:  'p_activity'
