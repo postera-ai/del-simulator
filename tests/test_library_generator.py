@@ -1,6 +1,7 @@
 import logging
 import queue
 from collections import Counter
+from multiprocessing import Process
 
 import pytest
 from del_simulator.library_generator import (
@@ -204,6 +205,22 @@ def test_save_output_skips_products_below_min_abundance(simple_data, tmpdir):
     assert set(written["smiles"]) == {"CCO"}
 
 
+class _JoinSpyProcess(Process):
+    """
+    Module-level (not a local class inside the test) so it stays picklable under
+    spawn-based multiprocessing (macOS/Windows) -- pickling a Process instance requires
+    pickling a reference to its class by module + qualname, which fails for a class
+    defined inside a function.
+    """
+
+    joined = []
+
+    def join(self, *args, **kwargs):
+        result = super().join(*args, **kwargs)
+        type(self).joined.append(self)
+        return result
+
+
 def test_generate_joins_the_consumer_process(simple_data, tmpdir, monkeypatch):
     """
     generate() started the consumer process (draining the queue and writing library.csv)
@@ -223,18 +240,10 @@ def test_generate_joins_the_consumer_process(simple_data, tmpdir, monkeypatch):
         min_abundance_to_output=0,
     )
 
-    real_process = library_generator_module.Process
-    joined = []
-
-    class SpyProcess(real_process):
-        def join(self, *args, **kwargs):
-            result = super().join(*args, **kwargs)
-            joined.append(self)
-            return result
-
-    monkeypatch.setattr(library_generator_module, "Process", SpyProcess)
+    _JoinSpyProcess.joined = []
+    monkeypatch.setattr(library_generator_module, "Process", _JoinSpyProcess)
 
     generator.generate()
 
-    assert len(joined) == 1
-    assert not joined[0].is_alive()
+    assert len(_JoinSpyProcess.joined) == 1
+    assert not _JoinSpyProcess.joined[0].is_alive()

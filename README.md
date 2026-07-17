@@ -1,5 +1,6 @@
 # A Computational Simulator for DNA-Encoded Libraries (DEL)
 
+
 ## Background
 
 An in-silico simulator of DNA-encoded library (DEL) screening and analysis. It models a DEL
@@ -9,6 +10,12 @@ amplification and NGS readout simulation, and data prep/ML training and inferenc
 or ChemProp) for predicting hits from the resulting sequencing counts. This is the reference
 implementation behind the paper below; see `notebooks/paper_figures.ipynb` for the code that
 generates its figures.
+
+
+
+![DEL Simulator](del_toc_overview.png)
+*DEL Simulator Overview*
+
 
 ## References
 Please cite our paper: [Understanding Machine Learning Models Trained on
